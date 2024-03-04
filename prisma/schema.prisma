@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model hr_employees_table {
+  id                   Int              @id @default(autoincrement())
+  first_name           String           @db.VarChar(30)
+  last_name            String           @db.VarChar(30)
+  email                String           @unique @db.VarChar(30)
+  phone_number         Int
+  job                  job_table        @relation(fields: [job_id], references: [id])
+  job_id               Int
+  manager              manager_table    @relation("ManagerToEmployee", fields: [manager_id], references: [id])
+  manager_id           Int
+  department           department_table @relation(fields: [department_id], references: [id])
+  department_id        Int
+  location             location_table   @relation(fields: [location_id], references: [id])
+  location_id          Int
+  starting_date        DateTime
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  hr_employees_tableId Int
+  role                 Role             @default(BASIC)
+  manager_table        manager_table[]  @relation("EmployeeToManager")
+}
+
+model department_table {
+  id                 Int                  @id @default(autoincrement())
+  department_name    String               @db.VarChar(30)
+  hr_employees_table hr_employees_table[]
+}
+
+model job_table {
+  id                 Int                  @id @default(autoincrement())
+  job_title          String               @db.VarChar(30)
+  min_salary         Int
+  max_salary         Int
+  hr_employees_table hr_employees_table[]
+  manager_table      manager_table[]
+}
+
+model location_table {
+  id                 Int                  @id @default(autoincrement())
+  location_name      String               @db.VarChar(30)
+  number_of_staff    Int
+  hr_employees_table hr_employees_table[]
+}
+
+model manager_table {
+  id                 Int                  @id @default(autoincrement())
+  employee           hr_employees_table   @relation("EmployeeToManager", fields: [employee_id], references: [id])
+  employee_id        Int
+  job                job_table            @relation(fields: [job_id], references: [id])
+  job_id             Int
+  hr_employees_table hr_employees_table[] @relation("ManagerToEmployee")
+}
+
+enum Role {
+  BASIC
+  ADMIN
+}
