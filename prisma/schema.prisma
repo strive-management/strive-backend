@@ -14,25 +14,24 @@ datasource db {
 }
 
 model hr_employees_table {
-  id                   Int              @id @default(autoincrement())
-  first_name           String           @db.VarChar(30)
-  last_name            String           @db.VarChar(30)
-  email                String           @unique @db.VarChar(30)
-  phone_number         Int
-  job                  job_table        @relation(fields: [job_id], references: [id])
-  job_id               Int
-  manager              manager_table    @relation("ManagerToEmployee", fields: [manager_id], references: [id])
-  manager_id           Int
-  department           department_table @relation(fields: [department_id], references: [id])
-  department_id        Int
-  location             location_table   @relation(fields: [location_id], references: [id])
-  location_id          Int
-  starting_date        DateTime
-  createdAt            DateTime         @default(now())
-  updatedAt            DateTime         @updatedAt
-  hr_employees_tableId Int
-  role                 Role             @default(BASIC)
-  manager_table        manager_table[]  @relation("EmployeeToManager")
+  id            Int              @id @default(autoincrement())
+  first_name    String           @db.VarChar(30)
+  last_name     String           @db.VarChar(30)
+  email         String?          @unique @db.VarChar(30)
+  phone_number  String?
+  job           job_table        @relation(fields: [job_id], references: [id])
+  job_id        Int
+  manager       manager_table?   @relation("ManagerToEmployee", fields: [manager_id], references: [id])
+  manager_id    Int?
+  department    department_table @relation(fields: [department_id], references: [id])
+  department_id Int
+  location      location_table   @relation(fields: [location_id], references: [id])
+  location_id   Int
+  starting_date DateTime
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  role          Role             @default(BASIC)
+  manager_table manager_table[]  @relation("EmployeeToManager")
 }
 
 model department_table {
@@ -59,8 +58,8 @@ model location_table {
 
 model manager_table {
   id                 Int                  @id @default(autoincrement())
-  employee           hr_employees_table   @relation("EmployeeToManager", fields: [employee_id], references: [id])
-  employee_id        Int
+  employee           hr_employees_table?  @relation("EmployeeToManager", fields: [employee_id], references: [id])
+  employee_id        Int?
   job                job_table            @relation(fields: [job_id], references: [id])
   job_id             Int
   hr_employees_table hr_employees_table[] @relation("ManagerToEmployee")
@@ -70,3 +69,8 @@ enum Role {
   BASIC
   ADMIN
 }
+
+//create a new salary_table for salary range.
+//delete hr_employees_tableid
+//make the phone number nullable and also string or BigInt!
+//make the managerId nullable
