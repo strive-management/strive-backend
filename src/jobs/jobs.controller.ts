@@ -48,7 +48,7 @@ export const deleteSingleJob = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const deleteJob = await JobsModel.deleteJob(id);
     if (!deleteJob) {
-      res.status(400).json({ message: 'That job ID does not exist' });
+      res.status(400).json({ message: `Job ${id} does not exist` });
     }
     res.status(200).send({ message: `Job ${id} has been deleted` });
   } catch (err: any) {

@@ -18,7 +18,7 @@ export const getSingleDepartment = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     if (!id) {
-      res.status(400).json({ message: 'Invalid departmentID.' });
+      res.status(400).json({ message: 'Invalid department ID.' });
     }
     const singleDepartment = await DepartmentModel.getDepartmentById(id);
     if (!singleDepartment) {
@@ -50,7 +50,7 @@ export const deleteSingleDepartment = async (req: Request, res: Response) => {
     if (!deleteDepartment) {
       res.status(400).json({ message: 'That department ID does not exist' });
     }
-    res.status(200).send({ message: `Department${id} has been deleted` });
+    res.status(200).send({ message: `Department ${id} has been deleted` });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });

@@ -48,7 +48,7 @@ export const deleteSingleLocation = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const deleteLocation = await LocationModel.deleteLocation(id);
     if (!deleteLocation) {
-      res.status(400).json({ message: 'That location ID does not exist' });
+      res.status(400).json({ message: `Location ${id} not found in database` });
     }
     res.status(200).send({ message: `Location ${id} has been deleted` });
   } catch (err: any) {
