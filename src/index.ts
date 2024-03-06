@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import * as EmployeeController from './hr_employees/hr_employees.controller';
 import * as DepartmentController from './departments/departments.controller';
 import * as JobsController from './jobs/jobs.controller';
+import * as LocationController from './locations/locations_controller';
 const express = require('express');
 const app = express();
 const router = Router(); // TODO: What is used for.
@@ -29,6 +30,12 @@ app.get('/jobs/:id', JobsController.getSingleJob);
 app.post('/jobs', JobsController.addSingleJob);
 app.delete('/jobs', JobsController.deleteSingleJob);
 app.patch('/jobs', JobsController.updateJobData);
+
+app.get('/locations', LocationController.getAllLocations);
+app.get('/locations/:id', LocationController.getSingleLocation);
+app.post('/locations', LocationController.addSingleLocation);
+app.delete('/locations/:id', LocationController.deleteSingleLocation);
+app.patch('/locations/:id', LocationController.updateLocationData);
 
 app.get('/', async (req: Request, res: Response) => {
   res.send('This is working');
