@@ -23,8 +23,9 @@ export const getSingleJob = async (req: Request, res: Response) => {
     const singleJob = await JobsModel.getJobById(id);
     if (!singleJob) {
       res.status(400).json({ message: 'Job not found.' });
+    } else {
+      res.status(200).json(singleJob);
     }
-    res.status(200).json(singleJob);
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
@@ -49,7 +50,7 @@ export const deleteSingleJob = async (req: Request, res: Response) => {
     if (!deleteJob) {
       res.status(400).json({ message: 'That job ID does not exist' });
     }
-    res.status(200).send({ message: `${deleteJob} has been deleted` });
+    res.status(200).send({ message: `Job ${id} has been deleted` });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
@@ -64,6 +65,7 @@ export const updateJobData = async (req: Request, res: Response) => {
     if (!updateJobInfo) {
       res.status(400).json({ message: 'Job not found.' });
     }
+    res.status(200).json({ message: 'Job is now updated.' });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });

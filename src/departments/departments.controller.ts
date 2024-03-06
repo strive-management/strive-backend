@@ -23,8 +23,9 @@ export const getSingleDepartment = async (req: Request, res: Response) => {
     const singleDepartment = await DepartmentModel.getDepartmentById(id);
     if (!singleDepartment) {
       res.status(400).json({ message: 'Department not found.' });
+    } else {
+      res.status(200).json(singleDepartment);
     }
-    res.status(200).json(singleDepartment);
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
@@ -49,7 +50,7 @@ export const deleteSingleDepartment = async (req: Request, res: Response) => {
     if (!deleteDepartment) {
       res.status(400).json({ message: 'That department ID does not exist' });
     }
-    res.status(200).send({ message: `${deleteDepartment} has been deleted` });
+    res.status(200).send({ message: `Department${id} has been deleted` });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
@@ -67,6 +68,7 @@ export const updateDepartmentData = async (req: Request, res: Response) => {
     if (!updateDepartmentInfo) {
       res.status(400).json({ message: 'Department not found.' });
     }
+    res.status(200).json({ message: 'Department is now updated.' });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });

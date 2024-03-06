@@ -16,7 +16,7 @@ dotenv.config();
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
 app.post('/employees', EmployeeController.addSingleEmployee);
-app.delete('/employees/:id', EmployeeController.deleteSingleEmloyee);
+app.delete('/employees/:id', EmployeeController.deleteSingleEmployee);
 app.patch('/employees/:id', EmployeeController.updateSingleEmployee);
 
 app.get('/departments', DepartmentController.getAllDepartments);
@@ -28,8 +28,8 @@ app.patch('/departments/:id', DepartmentController.updateDepartmentData);
 app.get('/jobs', JobsController.getAllJobs);
 app.get('/jobs/:id', JobsController.getSingleJob);
 app.post('/jobs', JobsController.addSingleJob);
-app.delete('/jobs', JobsController.deleteSingleJob);
-app.patch('/jobs', JobsController.updateJobData);
+app.delete('/jobs/:id', JobsController.deleteSingleJob);
+app.patch('/jobs/:id', JobsController.updateJobData);
 
 app.get('/locations', LocationController.getAllLocations);
 app.get('/locations/:id', LocationController.getSingleLocation);

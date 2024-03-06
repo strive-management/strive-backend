@@ -23,8 +23,9 @@ export const getSingleLocation = async (req: Request, res: Response) => {
     const singleLocation = await LocationModel.getLocationById(id);
     if (!singleLocation) {
       res.status(400).json({ message: 'Location not found.' });
+    } else {
+      res.status(200).json(singleLocation);
     }
-    res.status(200).json(singleLocation);
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
@@ -49,7 +50,7 @@ export const deleteSingleLocation = async (req: Request, res: Response) => {
     if (!deleteLocation) {
       res.status(400).json({ message: 'That location ID does not exist' });
     }
-    res.status(200).send({ message: `${deleteLocation} has been deleted` });
+    res.status(200).send({ message: `Location ${id} has been deleted` });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
@@ -64,6 +65,7 @@ export const updateLocationData = async (req: Request, res: Response) => {
     if (!updateLocationInfo) {
       res.status(400).json({ message: 'Location not found.' });
     }
+    res.status(200).send({ message: `Location ${id} has been updated` });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });
