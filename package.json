@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-data": "nodemon script.ts",
     "studio": "npx prisma studio",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "start": "NODE_ENV=production npm run migrate && npm run seed && ts-node src/index.ts",
+    "migrate": "prisma migrate deploy",
+    "seed": "ts-node script.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

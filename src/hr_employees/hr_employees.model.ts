@@ -5,12 +5,12 @@ const prisma = new PrismaClient()
 
 
 export const getEmployees = async () => {
-    const users = await prisma.hr_employees_table.findMany()
+    const users = await prisma.employees.findMany()
     return users
   }
 
 export const getEmployeeById = async (id:number)=> {
-  const user = await prisma.hr_employees_table.findUnique({
+  const user = await prisma.employees.findUnique({
     where: {  
      id
     }
@@ -19,7 +19,7 @@ export const getEmployeeById = async (id:number)=> {
 }
 
 export const addNewEmployee = async (data:any) => {
-  const user = await prisma.hr_employees_table.create({
+  const user = await prisma.employees.create({
     data,
   })
   return user
@@ -27,14 +27,14 @@ export const addNewEmployee = async (data:any) => {
 
 
 export const deleteEmployeeById = async (id:number) => {
-  const user = await prisma.hr_employees_table.delete({
+  const user = await prisma.employees.delete({
     where: { id }
   })
   return user
 }
 
 export const patchEmployeeById = async (id:number, data: any) => {
-  const user = await prisma.hr_employees_table.update({
+  const user = await prisma.employees.update({
     where: { id },
     data
   })
