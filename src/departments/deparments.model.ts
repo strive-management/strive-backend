@@ -3,12 +3,12 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const getDepartments = async () => {
-  const departments = await prisma.department_table.findMany();
+  const departments = await prisma.departments.findMany();
   return departments;
 };
 
 export const getDepartmentById = async (id: number) => {
-  const department = await prisma.department_table.findUnique({
+  const department = await prisma.departments.findUnique({
     where: {
       id,
     },
@@ -17,21 +17,21 @@ export const getDepartmentById = async (id: number) => {
 };
 
 export const addNewDepartment = async (data: any) => {
-  const department = await prisma.department_table.create({
+  const department = await prisma.departments.create({
     data,
   });
   return department;
 };
 
 export const deleteDepartment = async (id: number) => {
-  const department = await prisma.department_table.delete({
+  const department = await prisma.departments.delete({
     where: { id },
   });
   return department;
 };
 
 export const patchDepartmentById = async (id: number, data: any) => {
-  const department = await prisma.department_table.update({
+  const department = await prisma.departments.update({
     where: { id },
     data,
   });
