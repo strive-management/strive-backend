@@ -7,7 +7,7 @@ import * as JobsController from './jobs/jobs.controller';
 import * as LocationController from './locations/locations_controller';
 const express = require('express');
 const app = express();
-const router = Router(); // TODO: What is used for.
+const router = Router();
 app.use(cors());
 app.use(express.json());
 
