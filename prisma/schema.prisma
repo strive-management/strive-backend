@@ -13,56 +13,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model hr_employees_table {
-  id            Int              @id @default(autoincrement())
-  first_name    String           @db.VarChar(30)
-  last_name     String           @db.VarChar(30)
-  email         String?          @unique @db.VarChar(30)
-  phone_number  String?
-  job           job_table        @relation(fields: [job_id], references: [id])
-  job_id        Int
-  manager       manager_table?   @relation("ManagerToEmployee", fields: [manager_id], references: [id])
-  manager_id    Int?
-  department    department_table @relation(fields: [department_id], references: [id])
-  department_id Int
-  location      location_table   @relation(fields: [location_id], references: [id])
-  location_id   Int
-  starting_date DateTime
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
-  role          Role             @default(BASIC)
-  manager_table manager_table[]  @relation("EmployeeToManager")
+model employees {
+  id              Int          @id @default(autoincrement())
+  first_name      String       @db.VarChar(30)
+  last_name       String       @db.VarChar(30)
+  email           String?      @unique @db.VarChar(30)
+  phone_number    String?
+  job             jobs?        @relation(fields: [job_title], references: [job_title])
+  job_title       String?
+  manager         managers?    @relation("ManagerToEmployee", fields: [manager_id], references: [id])
+  manager_id      Int?
+  department      departments? @relation(fields: [department_name], references: [department_name])
+  department_name String?
+  location        locations?   @relation(fields: [location_name], references: [location_name])
+  location_name   String?
+  starting_date   DateTime?    @default(now())
+  salary          Int?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  role            Role         @default(BASIC)
+  managers        managers[]   @relation("EmployeeToManager")
+  attendance      attendance[]
+  app_users       app_users[]
+  clock           clock[]
 }
 
-model department_table {
-  id                 Int                  @id @default(autoincrement())
-  department_name    String               @db.VarChar(30)
-  hr_employees_table hr_employees_table[]
+model departments {
+  id              Int         @id @default(autoincrement())
+  department_name String?     @unique @db.VarChar(30)
+  employees       employees[]
 }
 
-model job_table {
-  id                 Int                  @id @default(autoincrement())
-  job_title          String               @db.VarChar(30)
-  min_salary         Int
-  max_salary         Int
-  hr_employees_table hr_employees_table[]
-  manager_table      manager_table[]
+model jobs {
+  id        Int         @id @default(autoincrement())
+  job_title String      @unique @db.VarChar(30)
+  employees employees[]
+  managers  managers[]
 }
 
-model location_table {
-  id                 Int                  @id @default(autoincrement())
-  location_name      String               @db.VarChar(30)
-  number_of_staff    Int
-  hr_employees_table hr_employees_table[]
+model locations {
+  id              Int         @id @default(autoincrement())
+  location_name   String      @unique @db.VarChar(30)
+  number_of_staff Int?        @default(0)
+  employees       employees[]
 }
 
-model manager_table {
-  id                 Int                  @id @default(autoincrement())
-  employee           hr_employees_table?  @relation("EmployeeToManager", fields: [employee_id], references: [id])
-  employee_id        Int?
-  job                job_table            @relation(fields: [job_id], references: [id])
-  job_id             Int
-  hr_employees_table hr_employees_table[] @relation("ManagerToEmployee")
+model managers {
+  id          Int         @id @default(autoincrement())
+  employee    employees?  @relation("EmployeeToManager", fields: [employee_id], references: [id])
+  employee_id Int?        @unique
+  job         jobs?       @relation(fields: [job_title], references: [job_title])
+  job_title   String?
+  employees   employees[] @relation("ManagerToEmployee")
+}
+
+model attendance {
+  id          Int        @id @default(autoincrement())
+  employee    employees? @relation(fields: [employee_id], references: [id])
+  employee_id Int?
+  status      String
+}
+
+model app_users {
+  id          Int        @id @default(autoincrement())
+  email       String
+  first_name  String
+  last_name   String
+  UUID        Int
+  employee    employees? @relation(fields: [employee_id], references: [id])
+  employee_id Int?
+}
+
+model clock {
+  id          Int        @id @default(autoincrement())
+  employee    employees? @relation(fields: [employee_id], references: [id])
+  employee_id Int?
+  clock_in    DateTime?  @default(now())
+  clock_out   DateTime?
 }
 
 enum Role {
