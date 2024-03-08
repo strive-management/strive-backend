@@ -76,7 +76,7 @@ model attendance {
 
 model app_users {
   id          Int        @id @default(autoincrement())
-  email       String
+  email       String     @unique
   first_name  String
   last_name   String
   UUID        String
