@@ -6,6 +6,7 @@ import * as DepartmentController from './departments/departments.controller';
 import * as JobsController from './jobs/jobs.controller';
 import * as LocationController from './locations/locations_controller';
 import * as UsersController from './users/users.controller';
+import * as ClocksController from './clocks/clocks.controller'
 const express = require('express');
 const app = express();
 const router = Router();
@@ -39,6 +40,12 @@ app.get('/locations/:id', LocationController.getSingleLocation);
 app.post('/locations', LocationController.addSingleLocation);
 app.delete('/locations/:id', LocationController.deleteSingleLocation);
 app.patch('/locations/:id', LocationController.updateLocationData);
+
+app.get('/clocks', ClocksController.getAllClocks);
+app.get('/clocks/:id', ClocksController.getSingleClocks);
+app.post('/clocks', ClocksController.addSingleClocks);
+app.delete('/clocks/:id', ClocksController.deleteSingleClocks);
+app.patch('/clocks/:id', ClocksController.updateClocksData);
 
 app.get('/', async (req: Request, res: Response) => {
   res.send('This is working');
