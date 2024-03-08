@@ -5,6 +5,7 @@ import * as EmployeeController from './hr_employees/hr_employees.controller';
 import * as DepartmentController from './departments/departments.controller';
 import * as JobsController from './jobs/jobs.controller';
 import * as LocationController from './locations/locations_controller';
+import * as UsersController from './users/users.controller';
 const express = require('express');
 const app = express();
 const router = Router();
@@ -12,6 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 dotenv.config();
+
+app.post('/users', UsersController.addNewUser);
 
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
