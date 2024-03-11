@@ -25,6 +25,11 @@ model employees {
   manager_id      Int?
   department      departments? @relation(fields: [department_name], references: [department_name])
   department_name String?
+  city            String?      @db.VarChar(30)
+  address_1       String?      @db.VarChar(50)
+  address_2       String?      @db.VarChar(50)
+  country         String?      @db.VarChar(30)
+  zipcode         String?      @db.VarChar(10)
   location        locations?   @relation(fields: [location_name], references: [location_name])
   location_name   String?
   starting_date   DateTime?    @default(now())
