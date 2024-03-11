@@ -9,7 +9,6 @@ import * as UsersController from './users/users.controller';
 import * as ClocksController from './clocks/clocks.controller'
 const express = require('express');
 const app = express();
-const router = Router();
 app.use(cors());
 app.use(express.json());
 
@@ -51,8 +50,9 @@ app.get('/', async (req: Request, res: Response) => {
   res.send('This is working');
 });
 
-export default router;
-
-app.listen(process.env.PORT || 8080, () => {
+export default app;
+if(process.env.NODE_ENV !== 'test') {
+ app.listen(process.env.PORT || 8080, () => {
   console.log('Server is running on port 8080 :)');
 });
+}
