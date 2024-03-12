@@ -6,7 +6,7 @@ import * as DepartmentController from './departments/departments.controller';
 import * as JobsController from './jobs/jobs.controller';
 import * as LocationController from './locations/locations_controller';
 import * as UsersController from './users/users.controller';
-import * as ClocksController from './clocks/clocks.controller'
+import * as ClocksController from './clocks/clocks.controller';
 const express = require('express');
 const app = express();
 const router = Router();
@@ -19,6 +19,7 @@ app.post('/users', UsersController.addNewUser);
 
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
+app.get('/someEmployees', EmployeeController.displaySomeEmployeeData);
 app.post('/employees', EmployeeController.addSingleEmployee);
 app.delete('/employees/:id', EmployeeController.deleteSingleEmployee);
 app.patch('/employees/:id', EmployeeController.updateSingleEmployee);
