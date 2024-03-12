@@ -71,3 +71,13 @@ export const updateSingleEmployee = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const displaySomeEmployeeData = async (req: Request, res: Response) => {
+  try {
+    const someEmployees = await EmployeeModel.getSomeEmployees();
+    res.status(200).json(someEmployees);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+    console.error(err.message);
+  }
+};
