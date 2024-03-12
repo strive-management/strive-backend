@@ -41,6 +41,7 @@ export const patchEmployeeById = async (id: number, data: any) => {
 export const getSomeEmployees = async () => {
   const users = await prisma.employees.findMany({
     select: {
+      id: true,
       first_name: true,
       last_name: true,
       job_title: true,
@@ -51,7 +52,6 @@ export const getSomeEmployees = async () => {
     orderBy: {
       createdAt: 'desc',
     },
-    take: 10,
   });
   return users;
 };
