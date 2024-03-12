@@ -21,6 +21,8 @@ afterAll(async () => {
         { job_title: "test1" },
         { job_title: "test2" },
         { job_title: "test3" },
+        { job_title: "test" },
+        { job_title: "Edited_job" },
       ]
     }
   });
@@ -105,23 +107,23 @@ describe('DELETE /jobs/:id', () => {
 })
 
 describe('PATCH / jobs/:id', () => {
-  let createdJobId: number;
+  let created: number;
 
     beforeAll(async() => {
       const createUserResponse = await request(app).post('/jobs').send({job_title: "test123123"})
-      createdJobId = createUserResponse.body.id 
-      console.log(createdJobId)     
+      created = createUserResponse.body.id 
+      console.log(created)     
     })
 
 
   test('should patch the user by ID', async () => {
-    const patchUser = await request(app).patch(`/jobs/${createdJobId}`).send({job_title: 'Edited_department'})
+    const patchUser = await request(app).patch(`/jobs/${created}`).send({job_title: 'Edited_job'})
 
-    const patchResult = await request(app).get(`/jobs/${createdJobId}`)
+    const patchResult = await request(app).get(`/jobs/${created}`)
 
     
     expect(patchResult).toBeDefined()
-    expect(patchResult.body).toEqual(expect.objectContaining({job_title: 'Edited_department'}))
+    expect(patchResult.body).toEqual(expect.objectContaining({job_title: 'Edited_job'}))
   });
 
 })
