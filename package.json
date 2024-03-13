@@ -11,7 +11,7 @@
     "start": "ts-node src/index.ts",
     "migrate": "prisma migrate deploy",
     "seed": "ts-node script.ts",
-    "build": "tsc && npm run migrate && npm run seed"
+    "build": "tsc npm install && npm run migrate && npm run seed"
   },
   "repository": {
     "type": "git",
