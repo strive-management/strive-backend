@@ -113,10 +113,10 @@
   },
   "include": [
     "src/**/*",
-    "typings.d.ts" // Include all files in the src directory
+    // Include all files in the src directory
   ],
   "exclude": [
-    "node_modules", // Exclude the node_modules directory
+     // Exclude the node_modules directory
     "**/*.spec.ts" // Exclude test files
   ]
 }
