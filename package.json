@@ -12,7 +12,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "ts-node script.js",
-    "build": "npm install && npm install --save-dev @types/node @types/express @types/cors && tsc",
+    "build": "tsc",
     "deploy": "npm run build && npm run prisma:migrate && npm run prisma:seed"
   },
   "repository": {
