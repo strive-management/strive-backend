@@ -8,12 +8,12 @@
     "dev-data": "nodemon script.ts",
     "studio": "npx prisma studio",
     "dev": "nodemon ./src/index.ts",
-    "start": "node dist/index.js",
+    "start": "node ./dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "ts-node script.js",
     "build": "tsc",
-    "deploy": "npm run build && npm run prisma:migrate && npm run prisma:seed"
+    "deploy": "prisma migrate deploy"
   },
   "repository": {
     "type": "git",
