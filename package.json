@@ -12,7 +12,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "ts-node script.js",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "deploy": "prisma migrate deploy"
   },
   "repository": {
