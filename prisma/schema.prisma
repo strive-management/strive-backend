@@ -41,6 +41,7 @@ model employees {
   attendance      attendance[]
   app_users       app_users[]
   clock           clock[]
+  schedule        schedule[]
 }
 
 model departments {
@@ -95,6 +96,18 @@ model clock {
   employee_id Int?
   clock_in    DateTime?  @default(now())
   clock_out   DateTime?
+}
+
+model schedule {
+  id              Int        @id @default(autoincrement())
+  employee        employees? @relation(fields: [employee_id], references: [id])
+  employee_id     Int?
+  date            DateTime
+  available       Boolean    @default(true)
+  scheduled_start DateTime?
+  scheduled_end   DateTime?
+  clock_in        DateTime?
+  clock_out       DateTime?
 }
 
 enum Role {
