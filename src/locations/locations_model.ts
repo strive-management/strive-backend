@@ -16,7 +16,7 @@ export const getLocationById = async (id: number) => {
   return location;
 };
 
-export const addNewLocation = async (data: any) => {
+export const addNewLocation = async (data: { location_name: string }) => {
   const location = await prisma.locations.create({
     data,
   });
