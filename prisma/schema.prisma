@@ -113,6 +113,7 @@ model schedule {
 enum Role {
   BASIC
   ADMIN
+  STAFF
 }
 
 //create a new salary_table for salary range.
