@@ -85,6 +85,7 @@ model app_users {
   email       String     @unique
   first_name  String
   last_name   String
+  password    String?
   UUID        String
   employee    employees? @relation(fields: [employee_id], references: [id])
   employee_id Int?
