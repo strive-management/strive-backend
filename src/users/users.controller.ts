@@ -1,97 +1,122 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import * as UserModel from './users.model';
-import bcrypt from 'bcrypt';
+import admin from 'firebase-admin';
 import jwt from 'jsonwebtoken';
-import validator from 'validator';
+
+import { createUser, findUserByEmail } from './users.model';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
-const prisma = new PrismaClient();
 const SECRET = process.env.SECRET; //"my_secret"
 
-// export const addNewUser = async (req: Request, res: Response) => {
-//   try {
-//     const data = req.body;
-//     const addNewUser = await UserModel.createUser(data);
-//     res.status(200).json({ success: true });
-//   } catch (err: any) {
-//     console.error(err.message);
-//     res.status(500).json({ message: err.message });
-//   }
-// };
+function createSessionToken(user: {
+  id: any;
+  email: any;
+  first_name?: string;
+  last_name?: string;
+  password?: string | null;
+  UUID?: string | null;
+  employee_id?: number | null;
+}) {
+  const payload = {
+    userId: user.id,
+    email: user.email,
+  };
+  const options = { expiresIn: '24h' };
+
+  if (typeof SECRET === 'undefined') {
+    throw new Error('SECRET_KEY is not defined');
+  }
+
+  const token = jwt.sign(payload, SECRET, options);
+
+  return token;
+}
 
 export const registerUser = async (req: Request, res: Response) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { token, email, first_name, last_name } = req.body;
 
   try {
-    if (!email || !password) {
-      throw new Error('All fields must be filled');
-    }
-    if (!validator.isEmail(email)) {
-      throw new Error('Email not valid');
-    }
-    if (!validator.isStrongPassword(password)) {
-      throw new Error('Password not strong enough');
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    if (!decodedToken || decodedToken.email !== email) {
+      return res.status(401).json({ error: 'Unauthorized access.' });
     }
 
-    const exist = await prisma.app_users.findUnique({ where: { email } });
-    if (exist) {
-      throw new Error('email already in use');
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({ error: 'User already exists.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await prisma.app_users.create({
-      data: {
-        first_name,
-        last_name,
-        email,
-        password: hashedPassword,
-      },
+    const newUser = await createUser({
+      email,
+      first_name: first_name,
+      last_name: last_name,
+      UUID: decodedToken.uid,
     });
 
-    if (!SECRET) {
-      console.error('SECRET is not defined in the environment variable');
-      return res.status(500).send('Internal Server Error');
-    }
-
-    const token = jwt.sign({ id: user.id, email: user.email }, SECRET, {
-      expiresIn: '3d',
-    });
-    res.cookie('authToken', token, {
+    const sessionToken = createSessionToken(newUser);
+    res.cookie('sessionToken', sessionToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
     });
 
-    res.status(201).json({ id: user.id, user: user.first_name, token });
+    res.status(201).json({
+      id: newUser.id,
+      email: newUser.email,
+      firstName: newUser.first_name,
+      lastName: newUser.last_name,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 };
 export const loginUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { token } = req.body;
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const email = decodedToken.email;
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const sessionToken = createSessionToken(user);
+    res.cookie('sessionToken', sessionToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+
+    res.json({
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+      },
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error.' });
   }
+};
 
-  if (!SECRET) {
-    console.error('SECRET is not defined in the environment variable');
-    return res.status(500).send('Internal Server Error');
+export const logoutUser = async (req: Request, res: Response) => {
+  try {
+    res.cookie('sessionToken', '', {
+      expires: new Date(0),
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+    res.status(200).json({ message: 'Successfully logged out' });
+  } catch (error) {
+    console.error('Logout Error:', error);
+    res.status(500).json({ error: 'Internal server error during logout' });
   }
-
-  const token = jwt.sign({ id: user.id, email: user.email }, SECRET, {
-    expiresIn: '3d',
-  });
-  res.cookie('authToken', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-  });
-  res.json({ token });
 };
