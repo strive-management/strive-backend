@@ -1,4 +1,4 @@
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import { Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
 import * as EmployeeController from './hr_employees/hr_employees.controller';
@@ -7,16 +7,32 @@ import * as JobsController from './jobs/jobs.controller';
 import * as LocationController from './locations/locations_controller';
 import * as UsersController from './users/users.controller';
 import * as ClocksController from './clocks/clocks.controller';
-import * as SchedulesController from  './schedules/schedules.controller'
-const express = require('express');
+import * as SchedulesController from './schedules/schedules.controller';
+import express from 'express';
+import bodyParser from 'body-parser';
+import admin from 'firebase-admin';
+
 const app = express();
 const router = Router();
-app.use(cors());
+
+const corsOptions: CorsOptions = {
+  origin: 'http://localhost:5174', // replace with your the frontend address
+  credentials: true,
+};
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(bodyParser.json());
 
 dotenv.config();
 
-app.post('/users', UsersController.addNewUser);
+app.post('/register', UsersController.registerUser);
+app.post('/login', UsersController.loginUser);
+app.post('/logout', UsersController.logoutUser);
 
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
