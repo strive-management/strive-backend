@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 export const getDepartments = async (UUID:string) => {
   const departments = await prisma.departments.findMany({
     where: {
-      user_id: {
-        equals: UUID
+      app_users: {
+        UUID: UUID
       }
     }
   });
