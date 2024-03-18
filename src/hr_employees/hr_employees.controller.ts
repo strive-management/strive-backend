@@ -5,7 +5,8 @@ import e from 'cors';
 
 export const getAllEmployees = async (req: Request, res: Response) => {
   try {
-    const employees = await EmployeeModel.getEmployees();
+    const UUID = req.body.user_id 
+    const employees = await EmployeeModel.getEmployees(UUID);
     res.status(200).json(employees);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -19,7 +20,8 @@ export const getSingleEmployee = async (req: Request, res: Response) => {
     if (!id) {
       res.status(400).json({ message: 'Invalid user ID.' });
     }
-    const singleEmployee = await EmployeeModel.getEmployeeById(id);
+    const UUID = req.body.user_id 
+    const singleEmployee = await EmployeeModel.getEmployeeById(id, UUID);
     if (!singleEmployee) {
       res.status(400).json({ message: 'User not found.' });
     } else {
@@ -59,9 +61,10 @@ export const deleteSingleEmployee = async (req: Request, res: Response) => {
 export const updateSingleEmployee = async (req: Request, res: Response) => {
   try {
     // const { first_name, last_name, email, phone_number, job_id, manager_id, department_id, location_id, starting_date} = req.body
+    const UUID = req.body.user_id 
     const data = req.body;
     const id = parseInt(req.params.id);
-    const user = await EmployeeModel.patchEmployeeById(id, data);
+    const user = await EmployeeModel.patchEmployeeById(id, data, UUID);
     if (!user) {
       res.status(400).json({ message: 'User not found.' });
     }
@@ -74,7 +77,8 @@ export const updateSingleEmployee = async (req: Request, res: Response) => {
 
 export const displaySomeEmployeeData = async (req: Request, res: Response) => {
   try {
-    const someEmployees = await EmployeeModel.getSomeEmployees();
+    const UUID:string = req.body.user_id 
+    const someEmployees = await EmployeeModel.getSomeEmployees(UUID);
     res.status(200).json(someEmployees);
   } catch (err: any) {
     res.status(500).json({ message: err.message });

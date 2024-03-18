@@ -2,15 +2,21 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getDepartments = async () => {
-  const departments = await prisma.departments.findMany();
+export const getDepartments = async (UUID:string) => {
+  const departments = await prisma.departments.findMany({
+    where: {
+      user_id: {
+        equals: UUID
+      }
+    }
+  });
   return departments;
 };
 
-export const getDepartmentById = async (id: number) => {
+export const getDepartmentById = async (id: number, UUID: string) => {
   const department = await prisma.departments.findUnique({
     where: {
-      id,
+      id, user_id:UUID
     },
   });
   return department;
@@ -30,9 +36,9 @@ export const deleteDepartment = async (id: number) => {
   return department;
 };
 
-export const patchDepartmentById = async (id: number, data: any) => {
+export const patchDepartmentById = async (id: number, data: any, UUID:string) => {
   const department = await prisma.departments.update({
-    where: { id },
+    where: { id, user_id:UUID },
     data,
   });
   return department;
