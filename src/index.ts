@@ -1,4 +1,4 @@
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import { Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
 import * as EmployeeController from './hr_employees/hr_employees.controller';
@@ -7,16 +7,52 @@ import * as JobsController from './jobs/jobs.controller';
 import * as LocationController from './locations/locations_controller';
 import * as UsersController from './users/users.controller';
 import * as ClocksController from './clocks/clocks.controller';
-import * as SchedulesController from  './schedules/schedules.controller'
-const express = require('express');
-const app = express();
-const router = Router();
-app.use(cors());
-app.use(express.json());
-
+import * as SchedulesController from './schedules/schedules.controller';
+import express from 'express';
+import bodyParser from 'body-parser';
+import admin from 'firebase-admin';
 dotenv.config();
 
-app.post('/users', UsersController.addNewUser);
+const serviceAccount = {
+  //type: process.env.FIREBASE_TYPE!,
+  projectId: process.env.FIREBASE_PROJECT_ID!,
+  privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID!,
+  privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
+  clientId: process.env.FIREBASE_CLIENT_ID!,
+  // auth_uri: process.env.FIREBASE_CLIENT_EMAIL!,
+  // token_uri: process.env.FIREBASE_AUTH_URI!,
+  // auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_CER!,
+  // client_x509_cert_url: process.env.FIREBASE_CLIENT_CER!,
+  // universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN!,
+};
+
+const app = express();
+const router = Router();
+
+const corsOptions: CorsOptions = {
+  origin: 'https://strive-frontend-gejy.onrender.com', // replace with your the frontend address
+  credentials: true,
+};
+
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+    console.log('Firebase Admin initialized successfully.');
+  } catch (error) {
+    console.error('Error initializing Firebase Admin:', error);
+  }
+}
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(bodyParser.json());
+
+app.post('/register', UsersController.registerUser);
+app.post('/login', UsersController.loginUser);
+app.post('/logout', UsersController.logoutUser);
 
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
