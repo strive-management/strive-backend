@@ -31,7 +31,7 @@ const app = express();
 const router = Router();
 
 const corsOptions: CorsOptions = {
-  origin: 'https://strive-frontend-gejy.onrender.com', // replace with your the frontend address
+  origin: 'http://localhost:5173', // replace with your the frontend address
   credentials: true,
 };
 
