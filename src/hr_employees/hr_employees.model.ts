@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 export const getEmployees = async (UUID:string) => {
   const users = await prisma.employees.findMany({
     where: {
-      user_id: {
-        equals: UUID
+      app_users: {
+        UUID: UUID
       }
     }
   }
