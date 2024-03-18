@@ -11,6 +11,21 @@ import * as SchedulesController from './schedules/schedules.controller';
 import express from 'express';
 import bodyParser from 'body-parser';
 import admin from 'firebase-admin';
+dotenv.config();
+
+const serviceAccount = {
+  //type: process.env.FIREBASE_TYPE!,
+  projectId: process.env.FIREBASE_PROJECT_ID!,
+  privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID!,
+  privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
+  clientId: process.env.FIREBASE_CLIENT_ID!,
+  // auth_uri: process.env.FIREBASE_CLIENT_EMAIL!,
+  // token_uri: process.env.FIREBASE_AUTH_URI!,
+  // auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_CER!,
+  // client_x509_cert_url: process.env.FIREBASE_CLIENT_CER!,
+  // universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN!,
+};
 
 const app = express();
 const router = Router();
@@ -20,15 +35,20 @@ const corsOptions: CorsOptions = {
   credentials: true,
 };
 
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-});
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+    console.log('Firebase Admin initialized successfully.');
+  } catch (error) {
+    console.error('Error initializing Firebase Admin:', error);
+  }
+}
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
-
-dotenv.config();
 
 app.post('/register', UsersController.registerUser);
 app.post('/login', UsersController.loginUser);
