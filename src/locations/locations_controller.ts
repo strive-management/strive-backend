@@ -6,8 +6,8 @@ import { deprecate } from 'util';
 
 export const getAllLocations = async (req: Request, res: Response) => {
   try {
-    const UUID = req.body.user_id
-    const locations = await LocationModel.getLocations(UUID);
+    
+    const locations = await LocationModel.getLocations();
     res.status(200).json(locations);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -17,12 +17,12 @@ export const getAllLocations = async (req: Request, res: Response) => {
 
 export const getSingleLocation = async (req: Request, res: Response) => {
   try {
-    const UUID = req.body.user_id
+    
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid location ID.' });
     }
-    const singleLocation = await LocationModel.getLocationById(id, UUID);
+    const singleLocation = await LocationModel.getLocationById(id);
     if (!singleLocation) {
       res.status(400).json({ message: 'Location not found.' });
     } else {
@@ -63,8 +63,7 @@ export const updateLocationData = async (req: Request, res: Response) => {
   try {
     const data = req.body;
     const id = parseInt(req.params.id);
-    const UUID = req.body.user_id
-    const updateLocationInfo = await LocationModel.patchLocationById(id, data, UUID);
+    const updateLocationInfo = await LocationModel.patchLocationById(id, data);
     if (!updateLocationInfo) {
       res.status(400).json({ message: 'Location not found.' });
     }
