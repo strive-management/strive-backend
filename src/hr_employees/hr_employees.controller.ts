@@ -19,6 +19,7 @@ export const getSingleEmployee = async (req: Request, res: Response) => {
     if (!id) {
       res.status(400).json({ message: 'Invalid user ID.' });
     }
+    console.log(getSingleEmployee);
     
     const singleEmployee = await EmployeeModel.getEmployeeById(id);
     if (!singleEmployee) {
