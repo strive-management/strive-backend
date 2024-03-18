@@ -10,8 +10,10 @@ export const getDepartments = async (UUID:string) => {
       }
     }
   });
+  console.log(departments);
   return departments;
 };
+//this is working?????\
 
 export const getDepartmentById = async (id: number, UUID: string) => {
   const department = await prisma.departments.findUnique({
