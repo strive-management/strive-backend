@@ -3,7 +3,8 @@ import * as schedulesModel from './schedules.model';
 
 export const getAllschedules = async (req: Request, res: Response) => {
   try {
-    const schedules = await schedulesModel.getSchedules();
+    const UUID:string = req.body.user_id 
+    const schedules = await schedulesModel.getSchedules(UUID);
     res.status(200).json(schedules);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -13,11 +14,12 @@ export const getAllschedules = async (req: Request, res: Response) => {
 
 export const getSingleSchedules = async (req: Request, res: Response) => {
   try {
+    const UUID:string = req.body.user_id 
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid schedule ID.' });
     }
-    const singleSchedule = await schedulesModel.getJobById(id);
+    const singleSchedule = await schedulesModel.getJobById(id, UUID);
     if (!singleSchedule) {
       res.status(400).json({ message: 'Schedule not found.' });
     } else {
@@ -56,9 +58,10 @@ export const deleteSingleSchedules = async (req: Request, res: Response) => {
 
 export const updateScheduleData = async (req: Request, res: Response) => {
   try {
+    const UUID:string = req.body.user_id 
     const data = req.body;
     const id = parseInt(req.params.id);
-    const updateScheduleInfo = await schedulesModel.patchScheduleById(id, data);
+    const updateScheduleInfo = await schedulesModel.patchScheduleById(id, data, UUID);
     if (!updateScheduleInfo) {
       res.status(400).json({ message: 'Schedule not found.' });
     }
