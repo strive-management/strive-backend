@@ -59,6 +59,8 @@ export const registerUser = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
+      path: '/',
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(201).json({
@@ -89,6 +91,8 @@ export const loginUser = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
+      path: '/',
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.json({
