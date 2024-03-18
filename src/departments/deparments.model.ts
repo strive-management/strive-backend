@@ -2,8 +2,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
 export const getDepartments = async () => {
   const departments = await prisma.departments.findMany();
+
   console.log(departments);
   return departments;
 };
