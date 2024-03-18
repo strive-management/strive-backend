@@ -9,21 +9,21 @@ export const getJobs = async () => {
 
 export const getJobById = async (id: number) => {
   const job = await prisma.jobs.findUnique({
-    where: { id },
+    where: { id }
   });
   return job;
 };
 
 export const addNewJob = async (data: any) => {
   const job = await prisma.jobs.create({
-    data,
+    data
   });
   return job;
 };
 
 export const deleteJob = async (id: number) => {
   const job = await prisma.jobs.delete({
-    where: { id },
+    where: { id }
   });
   return job;
 };
