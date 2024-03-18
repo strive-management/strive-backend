@@ -58,7 +58,7 @@ export const registerUser = async (req: Request, res: Response) => {
     res.cookie('sessionToken', sessionToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
     });
 
     res.status(201).json({
@@ -88,7 +88,7 @@ export const loginUser = async (req: Request, res: Response) => {
     res.cookie('sessionToken', sessionToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
     });
 
     res.json({
@@ -112,7 +112,7 @@ export const logoutUser = async (req: Request, res: Response) => {
       expires: new Date(0),
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
     });
     res.status(200).json({ message: 'Successfully logged out' });
   } catch (error) {
