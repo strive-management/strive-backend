@@ -6,8 +6,7 @@ import { deprecate } from 'util';
 
 export const getAllDepartments = async (req: Request, res: Response) => {
   try {
-    const UUID = req.body.user_id 
-    const departments = await DepartmentModel.getDepartments(UUID);
+    const departments = await DepartmentModel.getDepartments();
     res.status(200).json(departments);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -17,12 +16,11 @@ export const getAllDepartments = async (req: Request, res: Response) => {
 
 export const getSingleDepartment = async (req: Request, res: Response) => {
   try {
-    const UUID = req.body.user_id 
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid department ID.' });
     }
-    const singleDepartment = await DepartmentModel.getDepartmentById(id, UUID);
+    const singleDepartment = await DepartmentModel.getDepartmentById(id);
     if (!singleDepartment) {
       res.status(400).json({ message: 'Department not found.' });
     } else {
@@ -61,12 +59,12 @@ export const deleteSingleDepartment = async (req: Request, res: Response) => {
 
 export const updateDepartmentData = async (req: Request, res: Response) => {
   try {
-    const UUID = req.body.user_id 
+    
     const data = req.body;
     const id = parseInt(req.params.id);
     const updateDepartmentInfo = await DepartmentModel.patchDepartmentById(
       id,
-      data, UUID,
+      data, 
     );
     if (!updateDepartmentInfo) {
       res.status(400).json({ message: 'Department not found.' });
