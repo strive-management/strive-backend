@@ -2,15 +2,21 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getSchedules = async () => {
-  const schedules = await prisma.schedule.findMany();
+export const getSchedules = async (UUID:string) => {
+  const schedules = await prisma.schedule.findMany({
+    where: {
+      user_id: {
+        equals: UUID
+      }
+    }
+  });
   return schedules;
 };
 
-export const getJobById = async (id: number) => {
+export const getJobById = async (id: number, UUID:string) => {
   const schedule = await prisma.schedule.findUnique({
     where: {
-      id,
+      id, user_id:UUID
     },
   });
   return schedule;
@@ -30,10 +36,10 @@ export const deleteSchedule = async (id: number) => {
   return schedule;
 };
 
-export const patchScheduleById = async (id: number, data: any) => {
+export const patchScheduleById = async (id: number, data: any, UUID:string) => {
   const schedule = await prisma.schedule.update({
-    where: { id },
-    data,
+    where: { id, user_id: UUID },
+    data
   });
   return schedule;
 };

@@ -6,7 +6,8 @@ import { deprecate } from 'util';
 
 export const getAllJobs = async (req: Request, res: Response) => {
   try {
-    const jobs = await JobsModel.getJobs();
+    const UUID:string = req.body.user_id 
+    const jobs = await JobsModel.getJobs(UUID);
     res.status(200).json(jobs);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -16,11 +17,12 @@ export const getAllJobs = async (req: Request, res: Response) => {
 
 export const getSingleJob = async (req: Request, res: Response) => {
   try {
+    const UUID:string = req.body.user_id 
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid job ID.' });
     }
-    const singleJob = await JobsModel.getJobById(id);
+    const singleJob = await JobsModel.getJobById(id, UUID);
     if (!singleJob) {
       res.status(400).json({ message: 'Job not found.' });
     } else {
@@ -59,9 +61,10 @@ export const deleteSingleJob = async (req: Request, res: Response) => {
 
 export const updateJobData = async (req: Request, res: Response) => {
   try {
+    const UUID:string = req.body.user_id 
     const data = req.body;
     const id = parseInt(req.params.id);
-    const updateJobInfo = await JobsModel.patchJobById(id, data);
+    const updateJobInfo = await JobsModel.patchJobById(id, data, UUID);
     if (!updateJobInfo) {
       res.status(400).json({ message: 'Job not found.' });
     }
