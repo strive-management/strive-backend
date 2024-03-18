@@ -5,7 +5,7 @@ import e from 'cors';
 
 export const getAllEmployees = async (req: Request, res: Response) => {
   try {
-    const UUID = req.body.user_id 
+    const UUID = req.params.user_id 
     const employees = await EmployeeModel.getEmployees(UUID);
     res.status(200).json(employees);
   } catch (err: any) {
