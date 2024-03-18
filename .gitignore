@@ -41,6 +41,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+strive-dac54-firebase-adminsdk-pi1gz-3eb47860b0.json
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
