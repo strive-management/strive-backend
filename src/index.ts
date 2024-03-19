@@ -57,11 +57,10 @@ app.post('/logout', UsersController.logoutUser);
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
 app.get('/someEmployees', EmployeeController.displaySomeEmployeeData);
-app.get('/schedulestoday', SchedulesController.workingToday);
-app.get('/schedulesholiday', SchedulesController.holidayToday);
 app.post('/employees', EmployeeController.addSingleEmployee);
 app.delete('/employees/:id', EmployeeController.deleteSingleEmployee);
 app.patch('/employees/:id', EmployeeController.updateSingleEmployee);
+app.get('/employeesnumber', EmployeeController.displayEmployeeNumbers)
 
 app.get('/departments', DepartmentController.getAllDepartments);
 app.get('/departments/:id', DepartmentController.getSingleDepartment);
@@ -92,6 +91,9 @@ app.get('/schedules/:id', SchedulesController.getSingleSchedules);
 app.post('/schedules', SchedulesController.addSingleSchedules);
 app.delete('/schedules/:id', SchedulesController.deleteSingleSchedules);
 app.patch('/schedules/:id', SchedulesController.updateScheduleData);
+app.get('/schedulestoday', SchedulesController.workingToday);
+app.get('/schedulesholiday', SchedulesController.holidayToday);
+
 
 app.get('/', async (req: Request, res: Response) => {
   res.send('This is working fix it');

@@ -41,11 +41,14 @@ export const patchScheduleById = async (id: number, data: any) => {
 export const howManyWorking = async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
   const count = await prisma.schedule.count({
     where: {
       available: true,
       date: {
         gte: today,
+        lte:tomorrow
       },
     },
   });
@@ -56,11 +59,14 @@ export const howManyWorking = async () => {
 export const howManyHoliday = async () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
   const count = await prisma.schedule.count({
     where: {
       available: false,
       date: {
         gte: today,
+        lte:tomorrow
       },
     },
   });
