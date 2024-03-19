@@ -19,6 +19,8 @@ export const getSingleEmployee = async (req: Request, res: Response) => {
     if (!id) {
       res.status(400).json({ message: 'Invalid user ID.' });
     }
+    console.log(getSingleEmployee);
+    
     const singleEmployee = await EmployeeModel.getEmployeeById(id);
     if (!singleEmployee) {
       res.status(400).json({ message: 'User not found.' });
@@ -59,6 +61,7 @@ export const deleteSingleEmployee = async (req: Request, res: Response) => {
 export const updateSingleEmployee = async (req: Request, res: Response) => {
   try {
     // const { first_name, last_name, email, phone_number, job_id, manager_id, department_id, location_id, starting_date} = req.body
+    
     const data = req.body;
     const id = parseInt(req.params.id);
     const user = await EmployeeModel.patchEmployeeById(id, data);

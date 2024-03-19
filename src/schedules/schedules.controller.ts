@@ -13,6 +13,7 @@ export const getAllschedules = async (req: Request, res: Response) => {
 
 export const getSingleSchedules = async (req: Request, res: Response) => {
   try {
+    
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid schedule ID.' });

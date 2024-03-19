@@ -10,7 +10,7 @@ export const getSchedules = async () => {
 export const getJobById = async (id: number) => {
   const schedule = await prisma.schedule.findUnique({
     where: {
-      id,
+      id
     },
   });
   return schedule;
@@ -33,7 +33,7 @@ export const deleteSchedule = async (id: number) => {
 export const patchScheduleById = async (id: number, data: any) => {
   const schedule = await prisma.schedule.update({
     where: { id },
-    data,
+    data
   });
   return schedule;
 };

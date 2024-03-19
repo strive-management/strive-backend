@@ -6,6 +6,7 @@ import { deprecate } from 'util';
 
 export const getAllLocations = async (req: Request, res: Response) => {
   try {
+    
     const locations = await LocationModel.getLocations();
     res.status(200).json(locations);
   } catch (err: any) {
@@ -16,6 +17,7 @@ export const getAllLocations = async (req: Request, res: Response) => {
 
 export const getSingleLocation = async (req: Request, res: Response) => {
   try {
+    
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid location ID.' });

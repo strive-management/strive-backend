@@ -59,11 +59,12 @@ export const deleteSingleDepartment = async (req: Request, res: Response) => {
 
 export const updateDepartmentData = async (req: Request, res: Response) => {
   try {
+    
     const data = req.body;
     const id = parseInt(req.params.id);
     const updateDepartmentInfo = await DepartmentModel.patchDepartmentById(
       id,
-      data
+      data, 
     );
     if (!updateDepartmentInfo) {
       res.status(400).json({ message: 'Department not found.' });

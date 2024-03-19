@@ -10,7 +10,7 @@ export const getLocations = async () => {
 export const getLocationById = async (id: number) => {
   const location = await prisma.locations.findUnique({
     where: {
-      id,
+      id, 
     },
   });
   return location;

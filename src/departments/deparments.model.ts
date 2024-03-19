@@ -2,15 +2,19 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
 export const getDepartments = async () => {
   const departments = await prisma.departments.findMany();
+
+  console.log(departments);
   return departments;
 };
+//this is working?????\
 
 export const getDepartmentById = async (id: number) => {
   const department = await prisma.departments.findUnique({
     where: {
-      id,
+      id
     },
   });
   return department;
@@ -32,7 +36,7 @@ export const deleteDepartment = async (id: number) => {
 
 export const patchDepartmentById = async (id: number, data: any) => {
   const department = await prisma.departments.update({
-    where: { id },
+    where: { id},
     data,
   });
   return department;
