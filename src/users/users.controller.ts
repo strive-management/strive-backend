@@ -113,10 +113,11 @@ export const loginUser = async (req: Request, res: Response) => {
 export const logoutUser = async (req: Request, res: Response) => {
   try {
     res.cookie('sessionToken', '', {
-      expires: new Date(0),
       httpOnly: true,
       secure: true,
       sameSite: 'none',
+      path: '/',
+      expires: new Date(0),
     });
     res.status(200).json({ message: 'Successfully logged out' });
   } catch (error) {

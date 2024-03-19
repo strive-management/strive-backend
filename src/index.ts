@@ -11,26 +11,22 @@ import * as SchedulesController from './schedules/schedules.controller';
 import express from 'express';
 import bodyParser from 'body-parser';
 import admin from 'firebase-admin';
+import path from 'path';
 dotenv.config();
 
 const serviceAccount = {
-  //type: process.env.FIREBASE_TYPE!,
   projectId: process.env.FIREBASE_PROJECT_ID!,
   privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID!,
   privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
   clientId: process.env.FIREBASE_CLIENT_ID!,
-  // auth_uri: process.env.FIREBASE_CLIENT_EMAIL!,
-  // token_uri: process.env.FIREBASE_AUTH_URI!,
-  // auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_CER!,
-  // client_x509_cert_url: process.env.FIREBASE_CLIENT_CER!,
-  // universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN!,
 };
 
 const app = express();
 const router = Router();
 
 const corsOptions: CorsOptions = {
+
   origin: 'https://strive-frontend-gejy.onrender.com', // replace with your the frontend address https://strive-frontend-gejy.onrender.com
   credentials: true,
 };
@@ -94,6 +90,10 @@ app.patch('/schedules/:id', SchedulesController.updateScheduleData);
 app.get('/schedulestoday', SchedulesController.workingToday);
 app.get('/schedulesholiday', SchedulesController.holidayToday);
 
+
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, '../dist/index.js'));
+});
 
 app.get('/', async (req: Request, res: Response) => {
   res.send('This is working fix it');
