@@ -10,7 +10,7 @@ export const getSchedules = async () => {
 export const getJobById = async (id: number) => {
   const schedule = await prisma.schedule.findUnique({
     where: {
-      id
+      id,
     },
   });
   return schedule;
@@ -33,7 +33,37 @@ export const deleteSchedule = async (id: number) => {
 export const patchScheduleById = async (id: number, data: any) => {
   const schedule = await prisma.schedule.update({
     where: { id },
-    data
+    data,
   });
   return schedule;
+};
+
+export const howManyWorking = async () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const count = await prisma.schedule.count({
+    where: {
+      available: true,
+      date: {
+        gte: today,
+      },
+    },
+  });
+
+  return count;
+};
+
+export const howManyHoliday = async () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const count = await prisma.schedule.count({
+    where: {
+      available: false,
+      date: {
+        gte: today,
+      },
+    },
+  });
+
+  return count;
 };

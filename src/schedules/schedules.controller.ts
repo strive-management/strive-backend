@@ -13,7 +13,6 @@ export const getAllschedules = async (req: Request, res: Response) => {
 
 export const getSingleSchedules = async (req: Request, res: Response) => {
   try {
-    
     const id = parseInt(req.params.id);
     if (!id) {
       res.status(400).json({ message: 'Invalid schedule ID.' });
@@ -64,6 +63,26 @@ export const updateScheduleData = async (req: Request, res: Response) => {
       res.status(400).json({ message: 'Schedule not found.' });
     }
     res.status(200).json({ message: 'Schedule is now updated.' });
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const workingToday = async (req: Request, res: Response) => {
+  try {
+    const workingNumbers = await schedulesModel.howManyWorking();
+    res.status(200).json(workingNumbers);
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const holidayToday = async (req: Request, res: Response) => {
+  try {
+    const holidayNumbers = await schedulesModel.howManyHoliday();
+    res.status(200).json(holidayNumbers);
   } catch (err: any) {
     console.error(err.message);
     res.status(500).json({ message: err.message });

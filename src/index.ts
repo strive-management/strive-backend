@@ -57,6 +57,8 @@ app.post('/logout', UsersController.logoutUser);
 app.get('/employees', EmployeeController.getAllEmployees);
 app.get('/employees/:id', EmployeeController.getSingleEmployee);
 app.get('/someEmployees', EmployeeController.displaySomeEmployeeData);
+app.get('/schedulestoday', SchedulesController.workingToday);
+app.get('/schedulesholiday', SchedulesController.holidayToday);
 app.post('/employees', EmployeeController.addSingleEmployee);
 app.delete('/employees/:id', EmployeeController.deleteSingleEmployee);
 app.patch('/employees/:id', EmployeeController.updateSingleEmployee);
