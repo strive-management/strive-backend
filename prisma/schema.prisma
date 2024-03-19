@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model employees {
+  id              Int          @id @default(autoincrement())
+  app_users       app_users?   @relation(fields: [user_id], references: [UUID])
+  user_id         String?
+  first_name      String       @db.VarChar(30)
+  last_name       String       @db.VarChar(30)
+  email           String?      @unique @db.VarChar(30)
+  phone_number    String?
+  job_title       String?
+  manager_id      Int?
+  department_name String?
+  location_name   String?
+  starting_date   DateTime?    @default(now())
+  salary          Int?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  role            Role         @default(BASIC)
+  address_1       String?      @db.VarChar(50)
+  address_2       String?      @db.VarChar(50)
+  city            String?      @db.VarChar(30)
+  country         String?      @db.VarChar(30)
+  zipcode         String?      @db.VarChar(10)
+  attendance      attendance[]
+  clock           clock[]
+  department      departments? @relation(fields: [department_name], references: [department_name])
+  job             jobs?        @relation(fields: [job_title], references: [job_title])
+  location        locations?   @relation(fields: [location_name], references: [location_name])
+  manager         managers?    @relation("ManagerToEmployee", fields: [manager_id], references: [id])
+  managers        managers?    @relation("EmployeeToManager")
+  schedule        schedule[]
+}
+
+model departments {
+  id              Int         @id @default(autoincrement())
+  department_name String?     @unique @db.VarChar(30)
+  app_users       app_users?  @relation(fields: [user_id], references: [UUID])
+  user_id         String?
+  employees       employees[]
+}
+
+model jobs {
+  id        Int         @id @default(autoincrement())
+  job_title String      @unique @db.VarChar(30)
+  app_users app_users?  @relation(fields: [user_id], references: [UUID])
+  user_id   String?
+  employees employees[]
+  managers  managers[]
+}
+
+model locations {
+  id              Int         @id @default(autoincrement())
+  location_name   String      @unique @db.VarChar(30)
+  number_of_staff Int?        @default(0)
+  app_users       app_users?  @relation(fields: [user_id], references: [UUID])
+  user_id         String?
+  employees       employees[]
+}
+
+model managers {
+  id          Int         @id @default(autoincrement())
+  employee_id Int?        @unique
+  job_title   String?
+  app_users   app_users?  @relation(fields: [user_id], references: [UUID])
+  user_id     String?
+  employees   employees[] @relation("ManagerToEmployee")
+  employee    employees?  @relation("EmployeeToManager", fields: [employee_id], references: [id])
+  job         jobs?       @relation(fields: [job_title], references: [job_title])
+}
+
+model attendance {
+  id          Int        @id @default(autoincrement())
+  employee_id Int?
+  status      String?
+  app_users   app_users? @relation(fields: [user_id], references: [UUID])
+  user_id     String
+  employee    employees? @relation(fields: [employee_id], references: [id])
+}
+
+model app_users {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  first_name  String
+  last_name   String
+  UUID        String        @unique
+  employees   employees[]
+  departments departments[]
+  jobs        jobs[]
+  locations   locations[]
+  managers    managers[]
+  attendance  attendance[]
+  schedule    schedule[]
+
+}
+
+model clock {
+  id          Int        @id @default(autoincrement())
+  employee_id Int?
+  clock_in    DateTime?  @default(now())
+  clock_out   DateTime?
+  employee    employees? @relation(fields: [employee_id], references: [id])
+}
+
+model schedule {
+  id              Int        @id @default(autoincrement())
+  employee_id     Int?
+  date            DateTime
+  available       Boolean    @default(true)
+  scheduled_start DateTime?
+  scheduled_end   DateTime?
+  clock_in        DateTime?
+  clock_out       DateTime?
+  app_users       app_users? @relation(fields: [user_id], references: [UUID])
+  user_id         String?
+  employee        employees? @relation(fields: [employee_id], references: [id])
+}
+
+enum Role {
+  BASIC
+  ADMIN
+  STAFF
+}
