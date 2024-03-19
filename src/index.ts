@@ -31,7 +31,7 @@ const app = express();
 const router = Router();
 
 const corsOptions: CorsOptions = {
-  origin: 'https://strive-frontend-gejy.onrender.com', // replace with your the frontend address
+  origin: 'https://strive-frontend-gejy.onrender.com', // replace with your the frontend address https://strive-frontend-gejy.onrender.com
   credentials: true,
 };
 
@@ -60,7 +60,7 @@ app.get('/someEmployees', EmployeeController.displaySomeEmployeeData);
 app.post('/employees', EmployeeController.addSingleEmployee);
 app.delete('/employees/:id', EmployeeController.deleteSingleEmployee);
 app.patch('/employees/:id', EmployeeController.updateSingleEmployee);
-app.get('/employeesnumber', EmployeeController.displayEmployeeNumbers)
+app.get('/employeesnumber', EmployeeController.displayEmployeeNumbers);
 
 app.get('/departments', DepartmentController.getAllDepartments);
 app.get('/departments/:id', DepartmentController.getSingleDepartment);
