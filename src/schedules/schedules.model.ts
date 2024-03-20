@@ -1,10 +1,33 @@
 import { PrismaClient } from '@prisma/client';
+import { getEmployees } from '../hr_employees/hr_employees.model';
 
 const prisma = new PrismaClient();
 
 export const getSchedules = async () => {
-  const schedules = await prisma.schedule.findMany();
-  return schedules;
+  const schedules = await prisma.schedule.findMany({
+    include: {
+      employee: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+    },
+  });
+  const result = schedules.map((schedule) => {
+    return {
+      id: schedule.id,
+      employee_id: `${schedule.employee_id} ${schedule.employee?.first_name} ${schedule.employee?.last_name}`,
+      date: schedule.date,
+      available: schedule.available ? '✅' : '❌',
+      schdeuled_start: schedule.scheduled_start,
+      schdeuled_end: schedule.scheduled_end,
+      clock_in: schedule.clock_in,
+      clock_out: schedule.clock_out,
+    };
+  });
+  console.log(result);
+  return result;
 };
 
 export const getJobById = async (id: number) => {
@@ -48,7 +71,7 @@ export const howManyWorking = async () => {
       available: true,
       date: {
         gte: today,
-        lte:tomorrow
+        lte: tomorrow,
       },
     },
   });
@@ -66,7 +89,7 @@ export const howManyHoliday = async () => {
       available: false,
       date: {
         gte: today,
-        lte:tomorrow
+        lte: tomorrow,
       },
     },
   });
