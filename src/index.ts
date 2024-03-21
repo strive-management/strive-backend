@@ -26,8 +26,7 @@ const app = express();
 const router = Router();
 
 const corsOptions: CorsOptions = {
-
-  origin: 'https://strive-frontend-gejy.onrender.com', // replace with your the frontend address https://strive-frontend-gejy.onrender.com
+  origin: 'https://strive-frontend-gejy.onrender.com', // replace with your frontend address https://strive-frontend-gejy.onrender.com
   credentials: true,
 };
 
@@ -89,7 +88,6 @@ app.delete('/schedules/:id', SchedulesController.deleteSingleSchedules);
 app.patch('/schedules/:id', SchedulesController.updateScheduleData);
 app.get('/schedulestoday', SchedulesController.workingToday);
 app.get('/schedulesholiday', SchedulesController.holidayToday);
-
 
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.resolve(__dirname, '../dist/index.js'));
