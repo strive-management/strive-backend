@@ -87,7 +87,8 @@ export const displaySomeEmployeeData = async (req: Request, res: Response) => {
 
 export const displayEmployeeNumbers = async (req: Request, res: Response) => {
   try {
-    const employeeCount = await EmployeeModel.employeeCount();
+    const userId = req.body.user_id;
+    const employeeCount = await EmployeeModel.employeeCount(userId);
     res.status(200).json(employeeCount);
   } catch (err: any) {
     res.status(500).json({ message: err.message });

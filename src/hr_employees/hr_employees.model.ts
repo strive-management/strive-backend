@@ -56,8 +56,12 @@ export const getSomeEmployees = async () => {
   return users;
 };
 
-export const employeeCount = async () => {
-  const employeeNumbers = await prisma.employees.count();
+export const employeeCount = async (userId: string) => {
+  const employeeNumbers = await prisma.employees.count({
+    where: {
+      user_id: userId,
+    },
+  });
   return employeeNumbers;
 };
 
