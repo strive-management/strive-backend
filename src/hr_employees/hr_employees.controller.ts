@@ -5,7 +5,8 @@ import e from 'cors';
 
 export const getAllEmployees = async (req: Request, res: Response) => {
   try {
-    const employees = await EmployeeModel.getEmployees();
+    const userId = req.body.user_id;
+    const employees = await EmployeeModel.getEmployees(userId);
     res.status(200).json(employees);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -77,7 +78,8 @@ export const updateSingleEmployee = async (req: Request, res: Response) => {
 
 export const displaySomeEmployeeData = async (req: Request, res: Response) => {
   try {
-    const someEmployees = await EmployeeModel.getSomeEmployees();
+    const userId = req.body.user_id;
+    const someEmployees = await EmployeeModel.getSomeEmployees(userId);
     res.status(200).json(someEmployees);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
