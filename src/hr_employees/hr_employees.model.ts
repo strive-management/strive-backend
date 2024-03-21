@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const getEmployees = async (userId: string) => {
+  if (!userId) return 'You are not authorized to access this data';
   const users = await prisma.employees.findMany({
     where: {
       user_id: userId,
@@ -41,6 +42,7 @@ export const patchEmployeeById = async (id: number, data: any) => {
 };
 
 export const getSomeEmployees = async (userId: string) => {
+  if (!userId) return 'You are not authorized to access this data';
   const users = await prisma.employees.findMany({
     where: {
       user_id: userId,
@@ -62,6 +64,7 @@ export const getSomeEmployees = async (userId: string) => {
 };
 
 export const employeeCount = async (userId: string) => {
+  if (!userId) return 'You are not authorized to access this data';
   const employeeNumbers = await prisma.employees.count({
     where: {
       user_id: userId,
@@ -71,6 +74,7 @@ export const employeeCount = async (userId: string) => {
 };
 
 export const onlyYourEmployees = async (userId: string) => {
+  if (!userId) return 'You are not authorized to access this data';
   const userInfoOnly = await prisma.employees.findMany({
     where: {
       user_id: userId,
