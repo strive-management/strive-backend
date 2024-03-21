@@ -94,3 +94,14 @@ export const displayEmployeeNumbers = async (req: Request, res: Response) => {
     console.error(err.message);
   }
 };
+
+export const displayOnlyYourInfo = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body.user_id;
+    const onlyYourData = await EmployeeModel.onlyYourEmployees(userId);
+    res.status(200).json(onlyYourData);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+    console.error(err.message);
+  }
+};

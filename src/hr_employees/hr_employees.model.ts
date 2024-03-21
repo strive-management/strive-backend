@@ -60,3 +60,12 @@ export const employeeCount = async () => {
   const employeeNumbers = await prisma.employees.count();
   return employeeNumbers;
 };
+
+export const onlyYourEmployees = async (userId: string) => {
+  const userInfoOnly = await prisma.employees.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
+  return userInfoOnly;
+};
