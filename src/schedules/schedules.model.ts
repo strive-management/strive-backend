@@ -3,7 +3,8 @@ import { getEmployees } from '../hr_employees/hr_employees.model';
 
 const prisma = new PrismaClient();
 
-export const getSchedules = async () => {
+export const getSchedules = async (userId: string) => {
+  if (!userId) return [];
   const schedules = await prisma.schedule.findMany({
     include: {
       employee: {
@@ -62,7 +63,8 @@ export const patchScheduleById = async (id: number, data: any) => {
   return schedule;
 };
 
-export const howManyWorking = async () => {
+export const howManyWorking = async (userId: string) => {
+  if (!userId) return [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
@@ -80,7 +82,8 @@ export const howManyWorking = async () => {
   return count;
 };
 
-export const howManyHoliday = async () => {
+export const howManyHoliday = async (userId: string) => {
+  if (!userId) return [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
