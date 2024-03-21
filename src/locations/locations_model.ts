@@ -2,7 +2,8 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getLocations = async () => {
+export const getLocations = async (userId: string) => {
+  if (!userId) return [];
   const locations = await prisma.locations.findMany();
   return locations;
 };
@@ -10,7 +11,7 @@ export const getLocations = async () => {
 export const getLocationById = async (id: number) => {
   const location = await prisma.locations.findUnique({
     where: {
-      id, 
+      id,
     },
   });
   return location;

@@ -56,6 +56,7 @@ app.post('/employees', EmployeeController.addSingleEmployee);
 app.delete('/employees/:id', EmployeeController.deleteSingleEmployee);
 app.patch('/employees/:id', EmployeeController.updateSingleEmployee);
 app.get('/employeesnumber', EmployeeController.displayEmployeeNumbers);
+app.get('/employeesOnly', EmployeeController.displayOnlyYourInfo);
 
 app.get('/departments', DepartmentController.getAllDepartments);
 app.get('/departments/:id', DepartmentController.getSingleDepartment);
