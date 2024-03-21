@@ -3,7 +3,8 @@ import * as schedulesModel from './schedules.model';
 
 export const getAllschedules = async (req: Request, res: Response) => {
   try {
-    const schedules = await schedulesModel.getSchedules();
+    const userId = req.body.user_id;
+    const schedules = await schedulesModel.getSchedules(userId);
     res.status(200).json(schedules);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -71,7 +72,8 @@ export const updateScheduleData = async (req: Request, res: Response) => {
 
 export const workingToday = async (req: Request, res: Response) => {
   try {
-    const workingNumbers = await schedulesModel.howManyWorking();
+    const userId = req.body.user_id;
+    const workingNumbers = await schedulesModel.howManyWorking(userId);
     res.status(200).json(workingNumbers);
   } catch (err: any) {
     console.error(err.message);
@@ -81,7 +83,8 @@ export const workingToday = async (req: Request, res: Response) => {
 
 export const holidayToday = async (req: Request, res: Response) => {
   try {
-    const holidayNumbers = await schedulesModel.howManyHoliday();
+    const userId = req.body.user_id;
+    const holidayNumbers = await schedulesModel.howManyHoliday(userId);
     res.status(200).json(holidayNumbers);
   } catch (err: any) {
     console.error(err.message);

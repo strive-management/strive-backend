@@ -6,7 +6,8 @@ import { deprecate } from 'util';
 
 export const getAllJobs = async (req: Request, res: Response) => {
   try {
-    const jobs = await JobsModel.getJobs();
+    const userId = req.body.id;
+    const jobs = await JobsModel.getJobs(userId);
     res.status(200).json(jobs);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
