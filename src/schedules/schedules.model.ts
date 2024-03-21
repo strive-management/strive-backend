@@ -17,7 +17,8 @@ export const getSchedules = async () => {
   const result = schedules.map((schedule) => {
     return {
       id: schedule.id,
-      employee_id: `${schedule.employee_id} ${schedule.employee?.first_name} ${schedule.employee?.last_name}`,
+      employee_id: schedule.employee_id,
+      fullname: `${schedule.employee?.first_name} ${schedule.employee?.last_name}`,
       date: schedule.date,
       available: schedule.available ? '✅' : '❌',
       schdeuled_start: schedule.scheduled_start,
