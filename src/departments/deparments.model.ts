@@ -4,12 +4,14 @@ const prisma = new PrismaClient();
 
 export const getDepartments = async (userId: string) => {
   if (!userId) return [];
-  const departments = await prisma.departments.findMany();
+  const departments = await prisma.departments.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
 
-  console.log(departments);
   return departments;
 };
-//this is working?????\
 
 export const getDepartmentById = async (id: number) => {
   const department = await prisma.departments.findUnique({
