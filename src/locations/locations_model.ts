@@ -21,7 +21,10 @@ export const getLocationById = async (id: number) => {
   return location;
 };
 
-export const addNewLocation = async (data: { location_name: string }) => {
+export const addNewLocation = async (data: {
+  location_name: string;
+  user_id: string;
+}) => {
   const location = await prisma.locations.create({
     data,
   });

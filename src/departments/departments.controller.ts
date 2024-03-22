@@ -6,7 +6,7 @@ import { deprecate } from 'util';
 
 export const getAllDepartments = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const departments = await DepartmentModel.getDepartments(userId);
     res.status(200).json(departments);
   } catch (err: any) {

@@ -3,7 +3,7 @@ import * as schedulesModel from './schedules.model';
 
 export const getAllschedules = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const schedules = await schedulesModel.getSchedules(userId);
     res.status(200).json(schedules);
   } catch (err: any) {
@@ -72,7 +72,7 @@ export const updateScheduleData = async (req: Request, res: Response) => {
 
 export const workingToday = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const workingNumbers = await schedulesModel.howManyWorking(userId);
     res.status(200).json(workingNumbers);
   } catch (err: any) {
@@ -83,7 +83,7 @@ export const workingToday = async (req: Request, res: Response) => {
 
 export const holidayToday = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const holidayNumbers = await schedulesModel.howManyHoliday(userId);
     res.status(200).json(holidayNumbers);
   } catch (err: any) {
