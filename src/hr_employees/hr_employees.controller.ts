@@ -5,7 +5,7 @@ import e from 'cors';
 
 export const getAllEmployees = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const employees = await EmployeeModel.getEmployees(userId);
     res.status(200).json(employees);
   } catch (err: any) {
@@ -78,7 +78,7 @@ export const updateSingleEmployee = async (req: Request, res: Response) => {
 
 export const displaySomeEmployeeData = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const someEmployees = await EmployeeModel.getSomeEmployees(userId);
     res.status(200).json(someEmployees);
   } catch (err: any) {
@@ -89,7 +89,7 @@ export const displaySomeEmployeeData = async (req: Request, res: Response) => {
 
 export const displayEmployeeNumbers = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const employeeCount = await EmployeeModel.employeeCount(userId);
     res.status(200).json(employeeCount);
   } catch (err: any) {
@@ -100,7 +100,7 @@ export const displayEmployeeNumbers = async (req: Request, res: Response) => {
 
 export const displayOnlyYourInfo = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const onlyYourData = await EmployeeModel.onlyYourEmployees(userId);
     res.status(200).json(onlyYourData);
   } catch (err: any) {

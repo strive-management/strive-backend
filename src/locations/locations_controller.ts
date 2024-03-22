@@ -6,7 +6,7 @@ import { deprecate } from 'util';
 
 export const getAllLocations = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.query.user_id as string;
     const locations = await LocationModel.getLocations(userId);
     res.status(200).json(locations);
   } catch (err: any) {
