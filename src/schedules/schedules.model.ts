@@ -1,10 +1,36 @@
 import { PrismaClient } from '@prisma/client';
+import { getEmployees } from '../hr_employees/hr_employees.model';
 
 const prisma = new PrismaClient();
 
-export const getSchedules = async () => {
-  const schedules = await prisma.schedule.findMany();
-  return schedules;
+export const getSchedules = async (userId: string) => {
+  if (!userId) return [];
+  const schedules = await prisma.schedule.findMany({
+    where: { user_id: userId },
+    include: {
+      employee: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+    },
+  });
+  const result = schedules.map((schedule) => {
+    return {
+      id: schedule.id,
+      employee_id: schedule.employee_id,
+      fullname: `${schedule.employee?.first_name} ${schedule.employee?.last_name}`,
+      date: schedule.date,
+      available: schedule.available ? '✅' : '❌',
+      schdeuled_start: schedule.scheduled_start,
+      schdeuled_end: schedule.scheduled_end,
+      clock_in: schedule.clock_in,
+      clock_out: schedule.clock_out,
+    };
+  });
+  console.log(result);
+  return result;
 };
 
 export const getJobById = async (id: number) => {
@@ -38,7 +64,8 @@ export const patchScheduleById = async (id: number, data: any) => {
   return schedule;
 };
 
-export const howManyWorking = async () => {
+export const howManyWorking = async (userId: string) => {
+  if (!userId) return [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
@@ -46,9 +73,10 @@ export const howManyWorking = async () => {
   const count = await prisma.schedule.count({
     where: {
       available: true,
+      user_id: userId,
       date: {
         gte: today,
-        lte:tomorrow
+        lte: tomorrow,
       },
     },
   });
@@ -56,7 +84,8 @@ export const howManyWorking = async () => {
   return count;
 };
 
-export const howManyHoliday = async () => {
+export const howManyHoliday = async (userId: string) => {
+  if (!userId) return [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
@@ -64,9 +93,10 @@ export const howManyHoliday = async () => {
   const count = await prisma.schedule.count({
     where: {
       available: false,
+      user_id: userId,
       date: {
         gte: today,
-        lte:tomorrow
+        lte: tomorrow,
       },
     },
   });

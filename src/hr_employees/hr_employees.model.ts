@@ -2,16 +2,19 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getEmployees = async () => {
-  const users = await prisma.employees.findMany();
+export const getEmployees = async (userId: string) => {
+  if (!userId) return [];
+  const users = await prisma.employees.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
   return users;
 };
 
 export const getEmployeeById = async (id: number) => {
   const user = await prisma.employees.findUnique({
-    where: {
-      id,
-    },
+    where: { id },
   });
   return user;
 };
@@ -38,8 +41,12 @@ export const patchEmployeeById = async (id: number, data: any) => {
   return user;
 };
 
-export const getSomeEmployees = async () => {
+export const getSomeEmployees = async (userId: string) => {
+  if (!userId) return [];
   const users = await prisma.employees.findMany({
+    where: {
+      user_id: userId,
+    },
     select: {
       id: true,
       first_name: true,
@@ -56,7 +63,22 @@ export const getSomeEmployees = async () => {
   return users;
 };
 
-export const employeeCount = async () => {
-  const employeeNumbers = await prisma.employees.count();
+export const employeeCount = async (userId: string) => {
+  if (!userId) return [];
+  const employeeNumbers = await prisma.employees.count({
+    where: {
+      user_id: userId,
+    },
+  });
   return employeeNumbers;
+};
+
+export const onlyYourEmployees = async (userId: string) => {
+  if (!userId) return [];
+  const userInfoOnly = await prisma.employees.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
+  return userInfoOnly;
 };

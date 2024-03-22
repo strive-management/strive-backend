@@ -6,7 +6,8 @@ import { deprecate } from 'util';
 
 export const getAllDepartments = async (req: Request, res: Response) => {
   try {
-    const departments = await DepartmentModel.getDepartments();
+    const userId = req.query.user_id as string;
+    const departments = await DepartmentModel.getDepartments(userId);
     res.status(200).json(departments);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -59,12 +60,11 @@ export const deleteSingleDepartment = async (req: Request, res: Response) => {
 
 export const updateDepartmentData = async (req: Request, res: Response) => {
   try {
-    
     const data = req.body;
     const id = parseInt(req.params.id);
     const updateDepartmentInfo = await DepartmentModel.patchDepartmentById(
       id,
-      data, 
+      data
     );
     if (!updateDepartmentInfo) {
       res.status(400).json({ message: 'Department not found.' });
