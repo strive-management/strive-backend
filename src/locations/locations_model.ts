@@ -4,7 +4,11 @@ const prisma = new PrismaClient();
 
 export const getLocations = async (userId: string) => {
   if (!userId) return [];
-  const locations = await prisma.locations.findMany();
+  const locations = await prisma.locations.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
   return locations;
 };
 

@@ -4,7 +4,11 @@ const prisma = new PrismaClient();
 
 export const getJobs = async (userId: string) => {
   if (!userId) return [];
-  const jobs = await prisma.jobs.findMany();
+  const jobs = await prisma.jobs.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
   return jobs;
 };
 

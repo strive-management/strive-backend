@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 export const getSchedules = async (userId: string) => {
   if (!userId) return [];
   const schedules = await prisma.schedule.findMany({
+    where: { user_id: userId },
     include: {
       employee: {
         select: {
@@ -72,6 +73,7 @@ export const howManyWorking = async (userId: string) => {
   const count = await prisma.schedule.count({
     where: {
       available: true,
+      user_id: userId,
       date: {
         gte: today,
         lte: tomorrow,
@@ -91,6 +93,7 @@ export const howManyHoliday = async (userId: string) => {
   const count = await prisma.schedule.count({
     where: {
       available: false,
+      user_id: userId,
       date: {
         gte: today,
         lte: tomorrow,
