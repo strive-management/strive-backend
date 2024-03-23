@@ -91,3 +91,34 @@ export const holidayToday = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const updateClock = async (req: Request, res: Response) => {
+  try {
+    const data = req.body;
+    const id = parseInt(req.params.id);
+    const patchClock = await schedulesModel.patchClock(id, data);
+    if (!patchClock) {
+      res.status(400).json({ message: 'Schedule not found.' });
+    }
+    res
+      .status(200)
+      .json({ message: 'Schedule is now updated.', result: patchClock });
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getClockSchedule = async (req: Request, res: Response) => {
+  try {
+    const employeeId = req.query.employee_id as string;
+    const getOne = await schedulesModel.getOneSchedule(employeeId);
+    if (!getOne) {
+      res.status(400).json({ message: 'Schedule not found.' });
+    }
+    res.status(200).json(getOne);
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).json({ message: err.message });
+  }
+};

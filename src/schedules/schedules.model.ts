@@ -103,3 +103,33 @@ export const howManyHoliday = async (userId: string) => {
 
   return count;
 };
+export const patchClock = async (id: number, data: any) => {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const schedule = await prisma.schedule.update({
+    where: {
+      id: id,
+      date: today.toISOString(),
+    },
+    data: {
+      clock_in: data.clock_in,
+      clock_out: data.clock_out,
+    },
+  });
+  return schedule;
+};
+
+export const getOneSchedule = async (employeeId: string) => {
+  if (!employeeId) return [];
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  // const tomorrow = new Date(today);
+  // tomorrow.setDate(tomorrow.getDate() + 1);
+  const schedule = await prisma.schedule.findMany({
+    where: {
+      employee_id: parseInt(employeeId),
+      date: today.toISOString(),
+    },
+  });
+  return schedule;
+};
