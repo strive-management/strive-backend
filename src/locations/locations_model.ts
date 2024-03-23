@@ -8,6 +8,13 @@ export const getLocations = async (userId: string) => {
     where: {
       user_id: userId,
     },
+    select: {
+      location_name: true,
+      number_of_staff: true,
+      _count: {
+        select: { employees: true },
+      },
+    },
   });
   return locations;
 };
