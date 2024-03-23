@@ -111,7 +111,10 @@ export const patchClock = async (id: number, data: any) => {
       id: id,
       date: today.toISOString(),
     },
-    data,
+    data: {
+      clock_in: data.clock_in,
+      clock_out: data.clock_out,
+    },
   });
   return schedule;
 };
