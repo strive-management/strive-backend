@@ -90,7 +90,7 @@ export const howManyHoliday = async (userId: string) => {
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const count = await prisma.schedule.count({
+  const count = await prisma.schedule.findMany({
     where: {
       available: false,
       user_id: userId,
@@ -99,9 +99,23 @@ export const howManyHoliday = async (userId: string) => {
         lte: tomorrow,
       },
     },
+    include: {
+      employee: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+    },
   });
 
-  return count;
+  const result = count.map((employee) => {
+    return {
+      employee_id: employee.employee_id,
+      fullname: `${employee.employee?.first_name} ${employee.employee?.last_name}`,
+    };
+  });
+  return result;
 };
 export const patchClock = async (id: number, data: any) => {
   const today = new Date();
