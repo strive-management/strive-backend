@@ -25,8 +25,20 @@ const serviceAccount = {
 const app = express();
 const router = Router();
 
-const corsOptions: CorsOptions = {
-  origin: ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'],
+// const corsOptions: CorsOptions = {
+//   origin: ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'],
+//   credentials: true,
+// };
+
+const dynamicCorsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    const allowedDomains = ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'];
+    if (!origin || allowedDomains.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Blocked by CORS policy.'));
+    }
+  },
   credentials: true,
 };
 
@@ -41,7 +53,8 @@ if (!admin.apps.length) {
   }
 }
 
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors(dynamicCorsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 
