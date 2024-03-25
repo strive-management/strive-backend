@@ -23,8 +23,8 @@ export const getSchedules = async (userId: string) => {
       fullname: `${schedule.employee?.first_name} ${schedule.employee?.last_name}`,
       date: schedule.date,
       available: schedule.available ? '✅' : '❌',
-      schdeuled_start: schedule.scheduled_start,
-      schdeuled_end: schedule.scheduled_end,
+      scheduled_start: schedule.scheduled_start,
+      scheduled_end: schedule.scheduled_end,
       clock_in: schedule.clock_in,
       clock_out: schedule.clock_out,
     };
