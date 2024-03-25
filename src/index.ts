@@ -26,7 +26,9 @@ const app = express();
 const router = Router();
 
 const corsOptions: CorsOptions = {
+
   origin: ['https://strive-frontend-gejy.onrender.com', 'https://strive-management.com'], // replace with your frontend address https://strive-frontend-gejy.onrender.com
+
   credentials: true,
 };
 
