@@ -25,37 +25,15 @@ const serviceAccount = {
 const app = express();
 const router = Router();
 
-const allowedOrigins = ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'];
-
-// const corsOptions: CorsOptions = {
-//   origin: ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'],
-//   credentials: true,
-// };
+// const allowedOrigins = ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'];
 
 
-if (!admin.apps.length) {
-  try {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-    console.log('Firebase Admin initialized successfully.');
-  } catch (error) {
-    console.error('Error initializing Firebase Admin:', error);
-  }
-}
+app.use(cors({ origin: ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'] }));
+
+
 
 // app.use(cors(corsOptions));
-app.use(cors({
-  origin: function(origin, callback){
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      const msg = 'Blocked by CORS policy.'
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-}));
+
 
 app.use(express.json());
 app.use(bodyParser.json());
