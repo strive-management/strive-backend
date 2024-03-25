@@ -144,6 +144,27 @@ export const getOneSchedule = async (employeeId: string) => {
       employee_id: parseInt(employeeId),
       date: today.toISOString(),
     },
+    include: {
+      employee: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+    },
   });
-  return schedule;
+  const result = schedule.map((schedule) => {
+    return {
+      id: schedule.id,
+      employee_id: schedule.employee_id,
+      fullname: `${schedule.employee?.first_name} ${schedule.employee?.last_name}`,
+      date: schedule.date,
+      available: schedule.available ? '✅' : '❌',
+      scheduled_start: schedule.scheduled_start,
+      scheduled_end: schedule.scheduled_end,
+      clock_in: schedule.clock_in,
+      clock_out: schedule.clock_out,
+    };
+  });
+  return result;
 };
