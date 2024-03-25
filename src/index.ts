@@ -25,16 +25,13 @@ const serviceAccount = {
 const app = express();
 const router = Router();
 
-// const allowedOrigins = ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'];
+const corsOptions: CorsOptions = {
+  origin: 'https://www.strive-management.com/', // replace with your frontend address https://strive-frontend-gejy.onrender.com
+  credentials: true,
+};
 
 
-app.use(cors({ origin: ['https://strive-frontend-gejy.onrender.com', 'https://www.strive-management.com/', 'https://strive-management.com/'] }));
-
-
-
-// app.use(cors(corsOptions));
-
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 
