@@ -26,10 +26,20 @@ const app = express();
 const router = Router();
 
 const corsOptions: CorsOptions = {
-  origin: ['https://www.strive-management.com/', 'https://strive-frontend-gejy.onrender.com/'], // replace with your frontend address https://strive-frontend-gejy.onrender.com
+  origin: ['https://strive-frontend-gejy.onrender.com', 'https://strive-management.com'], // replace with your frontend address https://strive-frontend-gejy.onrender.com
   credentials: true,
 };
 
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+    console.log('Firebase Admin initialized successfully.');
+  } catch (error) {
+    console.error('Error initializing Firebase Admin:', error);
+  }
+}
 
 app.use(cors(corsOptions));
 app.use(express.json());
