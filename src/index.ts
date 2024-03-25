@@ -84,9 +84,11 @@ app.patch('/clocks/:id', ClocksController.updateClocksData);
 
 app.get('/schedules', SchedulesController.getAllschedules);
 app.get('/schedules/:id', SchedulesController.getSingleSchedules);
+app.get('/schedulesclock', SchedulesController.getClockSchedule);
 app.post('/schedules', SchedulesController.addSingleSchedules);
 app.delete('/schedules/:id', SchedulesController.deleteSingleSchedules);
 app.patch('/schedules/:id', SchedulesController.updateScheduleData);
+app.patch('/schedulesclock/:id', SchedulesController.updateClock);
 app.get('/schedulestoday', SchedulesController.workingToday);
 app.get('/schedulesholiday', SchedulesController.holidayToday);
 

@@ -8,6 +8,12 @@ export const getJobs = async (userId: string) => {
     where: {
       user_id: userId,
     },
+    select: {
+      job_title: true,
+      _count: {
+        select: { employees: true },
+      },
+    },
   });
   return jobs;
 };

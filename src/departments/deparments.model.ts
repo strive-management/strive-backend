@@ -8,6 +8,12 @@ export const getDepartments = async (userId: string) => {
     where: {
       user_id: userId,
     },
+    select: {
+      department_name: true,
+      _count: {
+        select: { employees: true },
+      },
+    },
   });
 
   return departments;
